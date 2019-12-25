@@ -1,0 +1,34 @@
+name: PHP Composer
+on: [push]
+
+jobs:
+  run:    
+    runs-on: ${{ matrix.operating-system }}
+    strategy:      
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.2', '7.3', '7.4']
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring, xml, ctype, iconv, intl mongodb-stable
+        memory: 4G
+        ini-values: post_max_size=256M, short_open_tag=On
+
+    - name: Install Composer Compat
+      run: make composer-compat
+
+    - name: Install Compoaer Dependencies
+      run: make composer-install
+
+    - name: Setup Problem Matchers for PHPUnit
+      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Run Tests
+      run: make ci
