@@ -27,7 +27,8 @@ jobs:
       run: make composer-compat
 
     - name: Install Compoaer Dependencies
-      env: SYMFONY_VERSION: {{ matrix.symfony-versions }}
+      env:
+        SYMFONY_VERSION: {{ matrix.symfony-versions }}
       run: make composer-install
 
     - name: Setup Problem Matchers for PHPUnit
