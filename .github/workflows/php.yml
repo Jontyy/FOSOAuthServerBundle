@@ -8,6 +8,8 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.2', '7.3', '7.4']
+        symfony-versions: ['3.4.*', '4.0.*', '4.1.*', '4.2.*', '4.3.*', '4.4.*']
+
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     steps:
     - name: Checkout
@@ -25,6 +27,7 @@ jobs:
       run: make composer-compat
 
     - name: Install Compoaer Dependencies
+      env: SYMFONY_VERSION: {{ matrix.symfony-versions }}
       run: make composer-install
 
     - name: Setup Problem Matchers for PHPUnit
