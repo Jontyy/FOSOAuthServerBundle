@@ -35,4 +35,4 @@ jobs:
       run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
     - name: Run Tests
-      run: make ci
+      run: vendor/bin/phpunit
